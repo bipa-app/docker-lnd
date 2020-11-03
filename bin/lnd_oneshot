@@ -6,7 +6,7 @@ set -ex
 lnd_init
 
 # Start wallet unlocker
-unlock &&
+unlock &
 
 # Set chain and network from env vars if set.
 if [ -n "${CHAIN}" ]; then
