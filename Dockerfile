@@ -19,14 +19,6 @@ RUN git config --global user.email "luizfilipester@gmail.com" \
   && cp /go/bin/lncli /bin/ \
   && cp /go/bin/lnd /bin/
 
-# Grab and install the latest version of lndconnect.
-WORKDIR $GOPATH/src/github.com/LN-Zap/lndconnect
-RUN git clone https://github.com/LN-Zap/lndconnect . \
-  && git reset --hard v0.2.0 \
-  && make \
-  && make install \
-  && cp /go/bin/lndconnect /bin/
-
 # Final image
 FROM alpine:3.10 as final
 
@@ -57,7 +49,6 @@ RUN addgroup -g ${GROUP_ID} -S lnd && \
 # Copy the compiled binaries from the builder image.
 COPY --from=builder /go/bin/lncli /bin/
 COPY --from=builder /go/bin/lnd /bin/
-COPY --from=builder /go/bin/lndconnect /bin/
 
 ## Set BUILD_VER build arg to break the cache here.
 ARG BUILD_VER=unknown
