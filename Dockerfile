@@ -1,6 +1,5 @@
 # Builder image
 FROM golang:1.13-alpine3.10 as builder
-MAINTAINER Tom Kirkpatrick <tkp@kirkdesigns.co.uk>
 
 # Add build tools.
 RUN apk --no-cache --virtual build-dependencies add \
@@ -9,14 +8,12 @@ RUN apk --no-cache --virtual build-dependencies add \
 
 # Grab and install the latest version of lnd and all related dependencies.
 WORKDIR $GOPATH/src/github.com/lightningnetwork/lnd
-RUN git config --global user.email "tkp@kirkdesigns.co.uk" \
-  && git config --global user.name "Tom Kirkpatrick" \
+RUN git config --global user.email "luizfilipester@gmail.com" \
+  && git config --global user.name "Luiz Parreira" \
   && git clone https://github.com/lightningnetwork/lnd . \
-  && git reset --hard v0.10.2-beta \
-  && git remote add lnzap https://github.com/LN-Zap/lnd \
-  && git fetch lnzap \
-  && git cherry-pick a7eb1085f2fef37f26e118291d5521cd1b247571 \
-  && git cherry-pick b95a0a0f1e22d39748449f7d47bf75be106b9b4d \
+  && git reset --hard v0.11.1-beta \
+  && git remote add ln https://github.com/lightningnetwork/lnd \
+  && git fetch ln \
   && make \
   && make install tags="experimental monitoring autopilotrpc chainrpc invoicesrpc routerrpc signrpc walletrpc watchtowerrpc wtclientrpc" \
   && cp /go/bin/lncli /bin/ \
@@ -32,7 +29,6 @@ RUN git clone https://github.com/LN-Zap/lndconnect . \
 
 # Final image
 FROM alpine:3.10 as final
-MAINTAINER Tom Kirkpatrick <tkp@kirkdesigns.co.uk>
 
 # Add utils.
 RUN apk --no-cache add \
@@ -75,6 +71,9 @@ EXPOSE 9735
 
 # Expose grpc port
 EXPOSE 10009
+
+# Expose rest port
+EXPOSE 8081
 
 WORKDIR /lnd
 
