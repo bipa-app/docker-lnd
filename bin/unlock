@@ -48,6 +48,7 @@ set_default() {
 NETWORK=$(set_default "$NETWORK" "testnet")
 CHAIN=$(set_default "$CHAIN" "bitcoin")
 LND_DIR=$(set_default "$LND_DIR" "$HOME/.lnd")
+HOST=$(set_default "$HOST" "localhost")
 
 # Wait for rest service listening.
 echo "[lnd_unlock] Waiting for lnd rest service on port $RESTPORT..."
@@ -72,4 +73,4 @@ curl \
   --cacert "$LND_DIR/tls.cert" \
   --header $MACAROON_HEADER \
   -d '{ "wallet_password": "'$BASE64'" }' \
-  https://localhost:$RESTPORT/v1/unlockwallet
+  https://$HOST:$RESTPORT/v1/unlockwallet
