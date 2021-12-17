@@ -1,5 +1,5 @@
 # Builder image
-FROM golang:1.13-alpine3.10 as builder
+FROM golang:1.17-alpine3.15 as builder
 
 # Add build tools.
 RUN apk --no-cache --virtual build-dependencies add \
@@ -11,7 +11,7 @@ WORKDIR $GOPATH/src/github.com/lightningnetwork/lnd
 RUN git config --global user.email "luizfilipester@gmail.com" \
   && git config --global user.name "Luiz Parreira" \
   && git clone https://github.com/lightningnetwork/lnd . \
-  && git reset --hard v0.13.1-beta \
+  && git reset --hard v0.14.1-beta \
   && git remote add ln https://github.com/lightningnetwork/lnd \
   && git fetch ln \
   && make \
