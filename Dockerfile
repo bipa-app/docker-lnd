@@ -1,5 +1,5 @@
 # Builder image
-FROM golang:1.17-alpine3.15 as builder
+FROM golang:1.20.3-alpine as builder
 
 # Add build tools.
 RUN apk --no-cache --virtual build-dependencies add \
